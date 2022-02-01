@@ -12,12 +12,20 @@ public class CalculatorFrame extends JFrame {
     private static final int FRAME_WIDTH = 450;
     private static final int FRAME_HEIGHT = 600;
 
+    private static final String FONT = "Calibri";
+
+    private static final int RESULT_HEIGHT = 100;
+    private static final float RESULT_FONT_SIZE_SCALE = 0.75f;
+
+    private static final float KEYPAD_FONT_SIZE_SCALE = 0.50f;
+
     private Container container;
 
     public CalculatorFrame() throws HeadlessException {
         initFrame();
         initLayout();
-        initElements();
+        initHeader();
+        initKeypad();
     }
 
     private void initFrame() {
@@ -32,13 +40,52 @@ public class CalculatorFrame extends JFrame {
         this.setLayout(null);
     }
 
-    private void initElements() {
+    private void initHeader() {
+        int btnWidth = (FRAME_WIDTH/4);
+        JButton keyBtn = new JButton("C");
+        keyBtn.setFont(new Font(FONT, Font.PLAIN, Math.round(btnWidth * KEYPAD_FONT_SIZE_SCALE)));
+        keyBtn.setHorizontalAlignment(SwingConstants.CENTER);
+        keyBtn.setSize(btnWidth, RESULT_HEIGHT);
+        keyBtn.setLocation(FRAME_WIDTH - btnWidth, 0);
+        keyBtn.addActionListener(null);
+        container.add(keyBtn);
+
         JTextField resultField = new JTextField();
-        resultField.setFont(new Font("Calibri", Font.PLAIN, 25));
+        resultField.setFont(new Font(FONT, Font.PLAIN, Math.round(RESULT_HEIGHT*RESULT_FONT_SIZE_SCALE)));
         resultField.setHorizontalAlignment(SwingConstants.RIGHT);
-        resultField.setSize(FRAME_WIDTH, 30);
+        resultField.setSize(FRAME_WIDTH - btnWidth, RESULT_HEIGHT);
         resultField.setLocation(0, 0);
         container.add(resultField);
+    }
+
+    private void initKeypad() {
+        String[] keypad = new String[]{
+                "7", "8", "9", "/",
+                "4", "5", "6", "*",
+                "1", "2", "3", "-",
+                ",", "0", "=", "+"
+        };
+
+        int btnXPos = 0;
+        int btnYPos = RESULT_HEIGHT;
+        int btnWidth = (FRAME_WIDTH/4);
+        int btnHeight = ((FRAME_HEIGHT-RESULT_HEIGHT)/4) - 7;
+
+        for (String key : keypad) {
+            JButton keyBtn = new JButton(key);
+            keyBtn.setFont(new Font(FONT, Font.PLAIN, Math.round(btnWidth * KEYPAD_FONT_SIZE_SCALE)));
+            keyBtn.setHorizontalAlignment(SwingConstants.CENTER);
+            keyBtn.setSize(btnWidth, btnHeight);
+            keyBtn.setLocation(btnXPos, btnYPos);
+            keyBtn.addActionListener(null);
+            container.add(keyBtn);
+
+            btnXPos += btnWidth;
+            if (FRAME_WIDTH - btnXPos < btnWidth) {
+                btnXPos = 0;
+                btnYPos += btnHeight;
+            }
+        }
     }
 
     public void open() {
