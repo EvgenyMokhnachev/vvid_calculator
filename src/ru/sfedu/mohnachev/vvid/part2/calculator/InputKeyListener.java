@@ -12,7 +12,11 @@ public class InputKeyListener implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {
-        calculatorService.typeValue(String.valueOf(keyEvent.getKeyChar()));
+        calculatorService.typeValue(
+                keyEvent.getKeyCode() == 8
+                        ? ""
+                        : String.valueOf(keyEvent.getKeyChar())
+        );
         keyEvent.consume();
     }
 

@@ -51,9 +51,10 @@ public class CalculatorFrame extends JFrame {
         resultField.setSize(FRAME_WIDTH - btnWidth, RESULT_HEIGHT);
         resultField.setLocation(0, 0);
         resultField.addActionListener(new KeypadActionListener(calculatorService, "="));
-        resultField.addKeyListener(new InputKeyListener(calculatorService));
         resultField.setCaretColor(Color.WHITE);
         resultField.addCaretListener(new InputCaretListener(resultField));
+        resultField.addKeyListener(new InputKeyListener(calculatorService));
+        resultField.addFocusListener(new InputFocusListener(resultField));
 
         calculatorService.onChangeResultText(new CalculatorChangeResultListenerResultField(resultField));
         container.add(resultField);
