@@ -1,19 +1,18 @@
 package ru.sfedu.mohnachev.vvid.part2.calculator;
 
-import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class InputKeyListener implements KeyListener {
-    private JTextField field;
+    private CalculatorService calculatorService;
 
-    public InputKeyListener(JTextField field) {
-        this.field = field;
+    public InputKeyListener(CalculatorService calculatorService) {
+        this.calculatorService = calculatorService;
     }
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {
-        keyEvent.getKeyChar();
+        calculatorService.typeValue(String.valueOf(keyEvent.getKeyChar()));
         keyEvent.consume();
     }
 
@@ -21,7 +20,6 @@ public class InputKeyListener implements KeyListener {
     public void keyPressed(KeyEvent keyEvent) {}
 
     @Override
-    public void keyReleased(KeyEvent keyEvent) {
-        Long i = 0l;
-    }
+    public void keyReleased(KeyEvent keyEvent) {}
+
 }

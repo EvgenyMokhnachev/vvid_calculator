@@ -20,7 +20,8 @@ public class CalculatorFrame extends JFrame {
     private static final float KEYPAD_FONT_SIZE_SCALE = 0.50f;
 
     private Container container;
-    private JTextField resultField;
+
+    private CalculatorService calculatorService = new CalculatorService();
 
     public CalculatorFrame() throws HeadlessException {
         initFrame();
@@ -44,13 +45,17 @@ public class CalculatorFrame extends JFrame {
     private void initHeader() {
         int btnWidth = (FRAME_WIDTH/4);
 
-        resultField = new JTextField();
+        JTextField resultField = new JTextField();
         resultField.setFont(new Font(FONT, Font.PLAIN, Math.round(RESULT_HEIGHT*RESULT_FONT_SIZE_SCALE)));
         resultField.setHorizontalAlignment(SwingConstants.RIGHT);
         resultField.setSize(FRAME_WIDTH - btnWidth, RESULT_HEIGHT);
         resultField.setLocation(0, 0);
-        resultField.addActionListener(new KeypadActionListener(resultField, "="));
-        resultField.addKeyListener(new InputKeyListener(resultField));
+        resultField.addActionListener(new KeypadActionListener(calculatorService, "="));
+        resultField.addKeyListener(new InputKeyListener(calculatorService));
+        resultField.setCaretColor(Color.WHITE);
+        resultField.addCaretListener(new InputCaretListener(resultField));
+
+        calculatorService.onChangeResultText(new CalculatorChangeResultListenerResultField(resultField));
         container.add(resultField);
 
         JButton keyBtn = new JButton("C");
@@ -58,7 +63,7 @@ public class CalculatorFrame extends JFrame {
         keyBtn.setHorizontalAlignment(SwingConstants.CENTER);
         keyBtn.setSize(btnWidth, RESULT_HEIGHT);
         keyBtn.setLocation(FRAME_WIDTH - btnWidth, 0);
-        keyBtn.addActionListener(new KeypadActionListener(resultField, "C"));
+        keyBtn.addActionListener(new KeypadActionListener(calculatorService, "C"));
         container.add(keyBtn);
 
 
@@ -83,7 +88,7 @@ public class CalculatorFrame extends JFrame {
             keyBtn.setHorizontalAlignment(SwingConstants.CENTER);
             keyBtn.setSize(btnWidth, btnHeight);
             keyBtn.setLocation(btnXPos, btnYPos);
-            keyBtn.addActionListener(new KeypadActionListener(resultField, key));
+            keyBtn.addActionListener(new KeypadActionListener(calculatorService, key));
             container.add(keyBtn);
 
             btnXPos += btnWidth;
