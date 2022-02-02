@@ -20,6 +20,7 @@ public class CalculatorFrame extends JFrame {
     private static final float KEYPAD_FONT_SIZE_SCALE = 0.50f;
 
     private Container container;
+    private JTextField resultField;
 
     public CalculatorFrame() throws HeadlessException {
         initFrame();
@@ -42,20 +43,25 @@ public class CalculatorFrame extends JFrame {
 
     private void initHeader() {
         int btnWidth = (FRAME_WIDTH/4);
+
+        resultField = new JTextField();
+        resultField.setFont(new Font(FONT, Font.PLAIN, Math.round(RESULT_HEIGHT*RESULT_FONT_SIZE_SCALE)));
+        resultField.setHorizontalAlignment(SwingConstants.RIGHT);
+        resultField.setSize(FRAME_WIDTH - btnWidth, RESULT_HEIGHT);
+        resultField.setLocation(0, 0);
+        resultField.addActionListener(new KeypadActionListener(resultField, "="));
+        resultField.addKeyListener(new InputKeyListener(resultField));
+        container.add(resultField);
+
         JButton keyBtn = new JButton("C");
         keyBtn.setFont(new Font(FONT, Font.PLAIN, Math.round(btnWidth * KEYPAD_FONT_SIZE_SCALE)));
         keyBtn.setHorizontalAlignment(SwingConstants.CENTER);
         keyBtn.setSize(btnWidth, RESULT_HEIGHT);
         keyBtn.setLocation(FRAME_WIDTH - btnWidth, 0);
-        keyBtn.addActionListener(null);
+        keyBtn.addActionListener(new KeypadActionListener(resultField, "C"));
         container.add(keyBtn);
 
-        JTextField resultField = new JTextField();
-        resultField.setFont(new Font(FONT, Font.PLAIN, Math.round(RESULT_HEIGHT*RESULT_FONT_SIZE_SCALE)));
-        resultField.setHorizontalAlignment(SwingConstants.RIGHT);
-        resultField.setSize(FRAME_WIDTH - btnWidth, RESULT_HEIGHT);
-        resultField.setLocation(0, 0);
-        container.add(resultField);
+
     }
 
     private void initKeypad() {
@@ -77,7 +83,7 @@ public class CalculatorFrame extends JFrame {
             keyBtn.setHorizontalAlignment(SwingConstants.CENTER);
             keyBtn.setSize(btnWidth, btnHeight);
             keyBtn.setLocation(btnXPos, btnYPos);
-            keyBtn.addActionListener(null);
+            keyBtn.addActionListener(new KeypadActionListener(resultField, key));
             container.add(keyBtn);
 
             btnXPos += btnWidth;
