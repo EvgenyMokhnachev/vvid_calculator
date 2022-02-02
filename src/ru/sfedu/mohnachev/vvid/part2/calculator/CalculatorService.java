@@ -6,6 +6,7 @@ import java.util.List;
 public class CalculatorService {
     private final StringBuilder resultText = new StringBuilder("");
     private final List<CalculatorChangeResultListener> changeResultListeners = new ArrayList<>();
+    private final List<CalculatorOperationChangeListener> changeOperationListeners = new ArrayList<>();
 
     private Double previousValue = null;
     private String previousOperation = null;
@@ -27,9 +28,19 @@ public class CalculatorService {
         changeResultListeners.add(listener);
     }
 
+    public void onChangeOperation(CalculatorOperationChangeListener listener) {
+        changeOperationListeners.add(listener);
+    }
+
     private void doChangeResultListeners() {
         for (CalculatorChangeResultListener listener : changeResultListeners) {
             listener.change(resultText.toString());
+        }
+    }
+
+    private void doChangeOperationListeners() {
+        for (CalculatorOperationChangeListener listener : changeOperationListeners) {
+            listener.change(previousOperation);
         }
     }
 
@@ -92,6 +103,7 @@ public class CalculatorService {
         cleanTypedValue();
         this.previousValue = null;
         this.previousOperation = null;
+        doChangeOperationListeners();
     }
 
     private void cleanLastValue() {
@@ -151,6 +163,10 @@ public class CalculatorService {
         previousValue = currentValue;
         if (!currentOperation.equals("=")) {
             previousOperation = currentOperation;
+            doChangeOperationListeners();
+        } else {
+            previousOperation = null;
+            doChangeOperationListeners();
         }
         cleanOnType();
     }

@@ -15,7 +15,7 @@ public class CalculatorFrame extends JFrame {
     private static final String FONT = "Calibri";
 
     private static final int RESULT_HEIGHT = 100;
-    private static final float RESULT_FONT_SIZE_SCALE = 0.75f;
+    private static final float RESULT_FONT_SIZE_SCALE = 0.60f;
 
     private static final float KEYPAD_FONT_SIZE_SCALE = 0.50f;
 
@@ -91,6 +91,7 @@ public class CalculatorFrame extends JFrame {
             keyBtn.setLocation(btnXPos, btnYPos);
             keyBtn.addActionListener(new KeypadActionListener(calculatorService, key));
             container.add(keyBtn);
+            calculatorService.onChangeOperation(new CalculatorOperationChangeListenerKeypadBtn(keyBtn, key));
 
             btnXPos += btnWidth;
             if (FRAME_WIDTH - btnXPos < btnWidth) {
