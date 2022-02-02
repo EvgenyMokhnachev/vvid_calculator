@@ -7,8 +7,8 @@ public class CalculatorFrame extends JFrame {
 
     private static final String TITLE = "Калькулятор. КТбз3-4. Мохначев Е.С. Таганрог 2022 г.";
 
-    private static final int FRAME_X_POS = 300;
-    private static final int FRAME_Y_POS = 90;
+    private static final int FRAME_X_POS = 20;
+    private static final int FRAME_Y_POS = 20;
     private static final int FRAME_WIDTH = 450;
     private static final int FRAME_HEIGHT = 600;
 
